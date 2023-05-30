@@ -11,3 +11,15 @@ class Orderserializers(serializers.ModelSerializer):
         model = Orders
         fields = '__all__'
 
+
+class StudentsAddresssserializers(serializers.ModelSerializer):
+    class Meta:
+        model = Orders
+        fields = '__all__'
+
+class StudentsAddresssViews(serializers.ModelSerializer):
+    students_address = StudentsAddresssViews
+    class Meta:
+        model = Orders
+        fields = '__all__'       
+

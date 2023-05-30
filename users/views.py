@@ -40,6 +40,7 @@ class GetOrdersViews(APIView):
         print("name",name)
         if name:
             instance = Orders.objects.filter(first_name = name)
+        else:
             instance = Orders.objects.all()
         serializers = Orderserializers(instance,many=True)
         return Response (data = serializers.data)
@@ -47,11 +48,29 @@ class GetOrdersViews(APIView):
 
     def post(self,request):
        
-       param = request.data
-       print("params",param)
+        param = request.data
+        print("params",param)
 
-       serializers = Orderserializers(data=param)
-       serializers.is_valid(raise_exception=True)
-       serializers.save()
+        serializers = Orderserializers(data=param)
+        if serializers.is_valid():
+           serializers.save()
+           return Response({"Order","Placed"})
+        else:
+           print("error",serializers.errors)
+           return Response({"errors":str(serializers.errors)})
+    
+    
 
-       return Response({"Order","Placed"})
+class DeleteStudentsView(APIView):
+     def get(self,request,pk):
+        instance = Students.objects.get(id=pk)
+        instance.delete()
+        return Response({"data","deleted"})
+     
+
+class StudentsDetailsAddresssViews(APIView):
+    def get(self,request,pk):
+        instance = Students.objects.filter(id=pk)
+        serializers = StudentsDetailsAddresssViews(instance,many=True)
+
+        return Response(serializers.data)
