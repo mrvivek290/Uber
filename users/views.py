@@ -42,16 +42,16 @@ class GetOrdersViews(APIView):
             instance = Orders.objects.filter(first_name = name)
         else:
             instance = Orders.objects.all()
-        serializers = Orderserializers(instance,many=True)
-        return Response (data = serializers.data)
+        serializers = OrdersSerializers(instance,many=True)
+        return Response (serializers.data)
     
 
     def post(self,request):
        
         param = request.data
-        print("params",param)
+        print("params--------",param)
 
-        serializers = Orderserializers(data=param)
+        serializers = Orders(data=param)
         if serializers.is_valid():
            serializers.save()
            return Response({"Order","Placed"})
@@ -68,9 +68,19 @@ class DeleteStudentsView(APIView):
         return Response({"data","deleted"})
      
 
-class StudentsDetailsAddresssViews(APIView):
+class StudentsDetailAddressViews(APIView):
     def get(self,request,pk):
-        instance = Students.objects.filter(id=pk)
-        serializers = StudentsDetailsAddresssViews(instance,many=True)
+        instances = Students.objects.filter(id=pk)
+        serializer = StudentsDetailAddressSerializers(instances,many=True)
+        return Response(serializer.data)
+    
+
+
+class StudentsAdressDeleteViews(APIView):
+    def get(self,request,pk):
+        instance = Students.objects.get(id=pk)
+        instance = StudentsAdress.objects.filter(students=instance)
+        adress.deleted()
 
         return Response(serializers.data)
+         
